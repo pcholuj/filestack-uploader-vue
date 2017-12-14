@@ -18,6 +18,7 @@
     "typescript": "^2.6.2",
     "vue": "^2.5.2",
     "vue-class-component": "^6.1.1",
+    "vue-localstorage": "^0.5.0",
     "vue-router": "^3.0.1",
     "vuetify": "^0.17.4",
     "vuex": "^3.0.1"

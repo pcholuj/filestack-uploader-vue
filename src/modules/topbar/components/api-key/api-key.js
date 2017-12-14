@@ -1,23 +1,33 @@
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
     data() {
         return {
-            apikey: 123
+            apikey: null
         };
     },
     computed: {
         ...mapGetters([
-            'isAuthenticated'
+            'isApiInitialized'
+        ]),
+        ...mapActions([
+            'initializeApi'
         ])
     },
     mounted: function() {
-        console.log(this);
-        console.log('component created');
+        const apikey = this.$localStorage.get('apikey');
+        this.apikey = apikey;
+
+        if (apikey) {
+            this.$store.dispatch('initializeApi', this.apikey);
+        }
+
+        console.log('apiInitialized', this.isApiInitialized);
     },
     methods: {
-        submit: () => {
-            console.log('form api submit');
+        submit() {
+            this.$localStorage.set('apikey', this.apikey);
+            this.$store.dispatch('initializeApi', this.apikey);
         }
     }
 };
