@@ -1,7 +1,8 @@
 <v-card>
-    <v-toolbar color="cyan" dark>
-        <v-form v-model="valid">
-            <v-text-field label="apikey" v-model="apikey" required></v-text-field>
+    <v-toolbar>
+        <v-form>
+            <v-text-field label="ApiKey" v-model="apikey" placeholder="Please enter youre ApiKey" required></v-text-field>
+            <v-btn @click="submit">submit</v-btn>
         </v-form>
     </v-toolbar>
 </v-card>

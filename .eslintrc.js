@@ -17,6 +17,14 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+    "indent": ["error", 4],
+    "semi": ["error", "always"],
+    'comma-dangle': ['error', 'only-multiline'],
+    "space-before-function-paren": ["error",{
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+    }],
     // allow async-await
     'generator-star-spacing': 'off',
     // allow debugger during development

@@ -6,5 +6,8 @@
     width:50%;
     min-width:200px;
     margin:auto!important;
+    display:flex;
+    flex-direction: row;
+    align-content: bottom;
   }
 }

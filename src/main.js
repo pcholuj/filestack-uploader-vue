@@ -1,18 +1,18 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import App from './app'
-import router from './router'
-import Vuetify from 'vuetify'
+import Vue from 'vue';
+import App from './app';
+import router from './router';
+import Vuetify from 'vuetify';
+import store from './store/filestack.js';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-Vue.use(Vuetify)
-Vue.use(Vuex)
+Vue.use(Vuetify);
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
-})
+    store,
+    el: '#app',
+    router,
+    template: '<App/>',
+    components: { App }
+});
