@@ -1,3 +1,28 @@
-<div>
-  test list templatee
+<div class="files-list">
+    <v-list two-line subheader v-if="files.length > 0">
+        <v-subheader inset>Files</v-subheader>
+        <v-list-tile avatar v-for="file in files" v-bind:key="file.id" @click="">
+            <v-list-tile-avatar>
+                <thumbnail :extension="file.extension" :preview="file.preview"></thumbnail>
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+                <v-list-tile-title>{{ file.name }}</v-list-tile-title>
+                <v-list-tile-sub-title>{{ file.extension }}</v-list-tile-sub-title>
+                <v-list-tile-sub-title>{{ file.progress }}</v-list-tile-sub-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+                <v-btn icon ripple>
+                    <v-icon color="grey lighten-1">info</v-icon>
+                </v-btn>
+            </v-list-tile-action>
+        </v-list-tile>
+        <v-divider inset></v-divider>
+    </v-list>
+    <div class="add-files" v-if="files.length === 0">
+        <input type="file" @change="load" multiple/>
+        <div>
+            <span class="upload-icon"></span>
+            <span>Select Files To Upload</span>
+        </div>
+    </div>
 </div>

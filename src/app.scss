@@ -1,11 +1,12 @@
 @import './../node_modules/vuetify/dist/vuetify.min.css';
-
 body {
-  color :red;
+    color: red;
 }
 
-:host {
-  .toolbar {
-    width:100%;
-  }
+.toolbar {
+    width: 100%;
+}
+
+.content > .container {
+    height: 100%;
 }

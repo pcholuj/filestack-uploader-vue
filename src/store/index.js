@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-// import files from './modules/files';
+import files from './modules/files';
 
 import filestack from 'filestack-js';
 
@@ -28,6 +28,6 @@ export default new Vuex.Store({
         }
     },
     modules: {
-        // auth
+        files
     }
 });

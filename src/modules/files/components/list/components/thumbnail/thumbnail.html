@@ -1,0 +1,8 @@
+<div class="thumb">
+    <div v-if="preview" class="preview">
+        <img :src="preview" />
+    </div>
+    <div v-if="!preview" class="extension">
+        {{ extension }}
+    </div>
+</div>
