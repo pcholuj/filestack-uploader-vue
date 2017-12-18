@@ -29,17 +29,18 @@ export default {
                 return false;
             }
 
-            this.$store.dispatch('loadFiles', e.target.files).then(() => {
-                this.filesLoaded = true;
-                this.$toasted.success('Files has been loaded');
-            }).catch((err) => {
+            this.$toasted.info('Loading files, Please wait');
 
+            this.$store.dispatch('loadFiles', e.target.files).then(() => {
+                this.$toasted.clear();
+                this.filesLoaded = true;
+                this.$toasted.success('Files has been loaded, you can now upload them to filestack');
+            }).catch((err) => {
+                this.$toasted.error('There was problem during loading files, check console fore more info');
+                console.error(err);
             });
 
             return false;
-        },
-        deleteFile: function() {
-
         },
         upload: function() {
             if (!this.isApiInitialized) {
@@ -56,8 +57,9 @@ export default {
             this.isUploading = true;
             this.$store.dispatch('upload').then((res) => {
                 this.$toasted.success('Files has been uploaded');
-            }).catch(() => {
-
+            }).catch((err) => {
+                this.$toasted.error('There was problem during uploading files, check console fore more info');
+                console.error(err);
             });
         }
     }
