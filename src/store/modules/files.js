@@ -10,9 +10,9 @@ const getters = {
 };
 
 const helpers = {
-    IMAGE_MIMETYPES: [],
     readFile: (file) => {
         return new Promise((resolve, reject) => {
+            // @todo maybe use webworker for reading big files
             let fr = new FileReader();
 
             fr.onloadend = (e) => {
@@ -61,6 +61,7 @@ const actions = {
         let uploadQueue = [];
 
         files.forEach((file) => {
+            // overwrite sdk promise for non braking upload of all files in queue
             const promiseUpload = new Promise((resolve) => {
                 apiHandler.upload(file.fileHandler, {
                     onProgress: (ev) => {
