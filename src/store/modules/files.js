@@ -68,6 +68,8 @@ const actions = {
                 onRetry: (ev) => {
                     ctx.commit('updateUploadProgress', { file, ev });
                 }
+            }, {
+                filename: file.name
             }));
         });
 

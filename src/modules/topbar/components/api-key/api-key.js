@@ -21,8 +21,6 @@ export default {
         if (apikey) {
             this.$store.dispatch('initializeApi', this.apikey);
         }
-
-        console.log('apiInitialized', this.isApiInitialized);
     },
     methods: {
         submit() {

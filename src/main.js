@@ -15,7 +15,7 @@ Vue.use(Toasted, {
     fitToScreen: true,
     singleton: true,
     position: 'bottom-center',
-    duration: 1500
+    duration: 2500
 });
 
 /* eslint-disable no-new */
