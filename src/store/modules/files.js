@@ -87,7 +87,6 @@ const actions = {
     }
 };
 
-// mutations
 const mutations = {
     addFile: (state, file) => {
         state.files.push({
