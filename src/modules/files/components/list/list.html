@@ -9,7 +9,7 @@
     </v-toolbar>
 
     <v-list class="upload-list" two-line subheader v-if="files.length > 0">
-        <v-list-tile avatar v-for="file in files" v-bind:key="file.id" @click="">
+        <v-list-tile avatar v-for="file in files" v-bind:key="file.id" >
             <v-list-tile-avatar>
                 <thumbnail :extension="file.extension" :preview="file.preview"></thumbnail>
             </v-list-tile-avatar>
@@ -17,6 +17,7 @@
                 <v-list-tile-title>{{file.name}}</v-list-tile-title>
                 <v-list-tile-sub-title>
                     <span>{{file.progress}}% ({{file.uploadSpeed}}Kb/s)</span>
+                    <span v-if="file.uploadError" class="error">Failed to upload file</span>
                     <v-progress-linear :value="file.progress" height="4" color="success"></v-progress-linear>
                 </v-list-tile-sub-title>
 

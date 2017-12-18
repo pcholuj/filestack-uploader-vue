@@ -26,6 +26,7 @@ export default {
         submit() {
             this.$localStorage.set('apikey', this.apikey);
             this.$store.dispatch('initializeApi', this.apikey);
+            this.$toasted.success('ApiKey saved');
         }
     }
 };

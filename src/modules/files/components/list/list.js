@@ -53,13 +53,20 @@ export default {
                 return;
             }
 
+            this.$toasted.info('Uploading files please wait.');
+
             this.isUploading = true;
             this.$store.dispatch('upload').then((res) => {
-                this.isUploading = fasle;
-                this.$toasted.success('Files has been uploaded');
-            }).catch((err) => {
+                let isError = !!res.filter(result => (result instanceof Error)).length;
+
                 this.isUploading = false;
-                this.$toasted.error('There was problem during uploading files' + err.message);
+
+                if (isError) {
+                    this.$toasted.error('There was problem during uploading marked files.');
+                    return;
+                }
+
+                this.$toasted.success('Files has been uploaded');
             });
         }
     }

@@ -61,16 +61,25 @@ const actions = {
         let uploadQueue = [];
 
         files.forEach((file) => {
-            uploadQueue.push(apiHandler.upload(file.fileHandler, {
-                onProgress: (ev) => {
-                    ctx.commit('updateUploadProgress', { file, ev });
-                },
-                onRetry: (ev) => {
-                    ctx.commit('updateUploadProgress', { file, ev });
-                }
-            }, {
-                filename: file.name
-            }));
+            const promiseUpload = new Promise((resolve) => {
+                apiHandler.upload(file.fileHandler, {
+                    onProgress: (ev) => {
+                        ctx.commit('updateUploadProgress', { file, ev });
+                    },
+                    onRetry: (ev) => {
+                        ctx.commit('updateUploadProgress', { file, ev });
+                    }
+                }, {
+                    filename: file.name
+                }).then((res) => {
+                    resolve(res);
+                }).catch((err) => {
+                    ctx.commit('markAsFailed', file);
+                    resolve(err);
+                });
+            });
+
+            uploadQueue.push(promiseUpload);
         });
 
         return Promise.all(uploadQueue);
@@ -90,6 +99,7 @@ const mutations = {
             size: file.size,
             progress: 0,
             uploadSpeed: 0,
+            uploadError: false,
             fileHandler: file.raw
         });
     },
@@ -105,7 +115,12 @@ const mutations = {
             state.files[index].uploadSpeed = Math.round(data.ev.totalBytes / uploadDuration / 1024);
             state.files[index].progress = data.ev.totalPercent;
         }
-    }
+    },
+    markAsFailed: (state, file) => {
+        const index = state.files.indexOf(file);
+        state.files[index].uploadError = true;
+    },
+
 };
 
 export default {
