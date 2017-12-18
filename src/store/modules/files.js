@@ -110,6 +110,7 @@ const mutations = {
             state.files[index].uploadStartTime = Date.now();
             state.files[index].uploadSpeed = 0;
             state.files[index].progress = 0;
+            state.files[index].uploadError = false;
         } else {
             const uploadDuration = (Date.now() - state.files[index].uploadStartTime) / 1000;
             state.files[index].uploadSpeed = Math.round(data.ev.totalBytes / uploadDuration / 1024);
