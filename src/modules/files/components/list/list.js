@@ -1,18 +1,27 @@
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import Thumbnail from './components/thumbnail/thumbnail.vue';
 
 export default {
     name: 'FilesList',
+    data() {
+        return {
+            isUploading: null,
+            filesLoaded: null
+        };
+    },
     components: {
         'thumbnail': Thumbnail
     },
     computed: {
+        ...mapGetters([
+            'isApiInitialized'
+        ]),
         ...mapState({
             files: ({ files }) => files.files
         })
     },
     methods: {
-        load: function (e) {
+        load: function(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -21,15 +30,30 @@ export default {
             }
 
             this.$store.dispatch('loadFiles', e.target.files).then(() => {
-                // upload test
-                this.$store.dispatch('upload');
-                console.log('read done');
+                this.filesLoaded = true;
             });
 
             return false;
         },
-        upload: () => {
+        deleteFile: function() {
 
+        },
+        upload: function() {
+            if (!this.isApiInitialized) {
+                console.log('api not initialized');
+                return;
+            }
+
+            if (this.isUploading ||
+                this.files.length === 0 ||
+                !this.filesLoaded) {
+                return;
+            }
+
+            this.isUploading = true;
+            this.$store.dispatch('upload').then((res) => {
+                console.log(res, 'all files uploaded');
+            });
         }
     }
 };

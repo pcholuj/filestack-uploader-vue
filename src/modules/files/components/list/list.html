@@ -1,6 +1,14 @@
 <div class="files-list">
-    <v-list two-line subheader v-if="files.length > 0">
-        <v-subheader inset>Files</v-subheader>
+    <v-toolbar>
+        <v-toolbar-title>Files list</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-side-icon class="hidden-md-and-up"></v-toolbar-side-icon>
+        <v-toolbar-items class="hidden-sm-and-down">
+            <v-btn :disabled="isUploading || !filesLoaded" @click="upload()" flat>Upload</v-btn>
+        </v-toolbar-items>
+    </v-toolbar>
+
+    <v-list class="upload-list" two-line subheader v-if="files.length > 0">
         <v-list-tile avatar v-for="file in files" v-bind:key="file.id" @click="">
             <v-list-tile-avatar>
                 <thumbnail :extension="file.extension" :preview="file.preview"></thumbnail>

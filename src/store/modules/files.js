@@ -36,8 +36,7 @@ const helpers = {
 
             fr.readAsArrayBuffer(file);
         });
-    },
-    uploadStartTime: null
+    }
 };
 
 // actions
@@ -62,10 +61,11 @@ const actions = {
         let uploadQueue = [];
 
         files.forEach((file) => {
-            helpers.uploadStartTime = Date.now();
-
             uploadQueue.push(apiHandler.upload(file.fileHandler, {
                 onProgress: (ev) => {
+                    ctx.commit('updateUploadProgress', { file, ev });
+                },
+                onRetry: (ev) => {
                     ctx.commit('updateUploadProgress', { file, ev });
                 }
             }));
@@ -83,20 +83,26 @@ const mutations = {
             name: file.name,
             extension: file.name.split('.').pop(),
             preview: file.preview,
+            uploadStartTime: null,
             mimetype: file.mimetype,
             size: file.size,
-            progress: null,
-            uploadSpeed: null,
-            isUploaded: false,
+            progress: 0,
+            uploadSpeed: 0,
             fileHandler: file.raw
         });
     },
     updateUploadProgress: (state, data) => {
         const index = state.files.indexOf(data.file);
 
-        const uploadDuration = (Date.now() - helpers.uploadStartTime) / 1000;
-        state.files[index].uploadSpeed = Math.round(data.ev.totalBytes / uploadDuration / 1024);
-        state.files[index].progress = data.ev.totalPercent;
+        if (data.ev.totalBytes === 0) {
+            state.files[index].uploadStartTime = Date.now();
+            state.files[index].uploadSpeed = 0;
+            state.files[index].progress = 0;
+        } else {
+            const uploadDuration = (Date.now() - state.files[index].uploadStartTime) / 1000;
+            state.files[index].uploadSpeed = Math.round(data.ev.totalBytes / uploadDuration / 1024);
+            state.files[index].progress = data.ev.totalPercent;
+        }
     }
 };
 
