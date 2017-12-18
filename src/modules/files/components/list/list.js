@@ -31,6 +31,9 @@ export default {
 
             this.$store.dispatch('loadFiles', e.target.files).then(() => {
                 this.filesLoaded = true;
+                this.$toasted.success('Files has been loaded');
+            }).catch((err) => {
+
             });
 
             return false;
@@ -40,7 +43,7 @@ export default {
         },
         upload: function() {
             if (!this.isApiInitialized) {
-                console.log('api not initialized');
+                this.$toasted.error('Please provide apiKey first');
                 return;
             }
 
@@ -52,7 +55,9 @@ export default {
 
             this.isUploading = true;
             this.$store.dispatch('upload').then((res) => {
-                console.log(res, 'all files uploaded');
+                this.$toasted.success('Files has been uploaded');
+            }).catch(() => {
+
             });
         }
     }
