@@ -37,9 +37,7 @@ const helpers = {
             fr.readAsArrayBuffer(file);
         });
     },
-    uploadToFilestack: (file, apiHandler) => {
-        return new Promise();
-    }
+    uploadStartTime: null
 };
 
 // actions
@@ -59,15 +57,27 @@ const actions = {
     },
     upload: (ctx) => {
         const apiHandler = ctx.rootState.apiHandler;
-        // apiHandler.upload();
-        // console.log('ctx', ctx);
+        const files = ctx.state.files;
+
+        let uploadQueue = [];
+
+        files.forEach((file) => {
+            helpers.uploadStartTime = Date.now();
+
+            uploadQueue.push(apiHandler.upload(file.fileHandler, {
+                onProgress: (ev) => {
+                    ctx.commit('updateUploadProgress', { file, ev });
+                }
+            }));
+        });
+
+        return Promise.all(uploadQueue);
     }
 };
 
 // mutations
 const mutations = {
     addFile: (state, file) => {
-        console.log(file);
         state.files.push({
             id: null,
             name: file.name,
@@ -78,8 +88,15 @@ const mutations = {
             progress: null,
             uploadSpeed: null,
             isUploaded: false,
-            fileHandler: file.blob
+            fileHandler: file.raw
         });
+    },
+    updateUploadProgress: (state, data) => {
+        const index = state.files.indexOf(data.file);
+
+        const uploadDuration = (Date.now() - helpers.uploadStartTime) / 1000;
+        state.files[index].uploadSpeed = Math.round(data.ev.totalBytes / uploadDuration / 1024);
+        state.files[index].progress = data.ev.totalPercent;
     }
 };
 
